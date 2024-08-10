@@ -31,12 +31,11 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-        - name: Setup Node.js
-  uses: actions/setup-node@v3
-  with:
-    node-version: '16'
-- name: Install dependencies
-  run: npm install
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        
+      - name: Install dependencies
+        run: npm install
 
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
