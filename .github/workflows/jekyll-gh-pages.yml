@@ -17,35 +17,42 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
+      # ✅ Install PNPM first (this step was missing)
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false  # we'll install manually next
+
+      # ✅ Setup Node.js *after* pnpm, with caching enabled
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "20"
           cache: "pnpm"
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
-
+      # ✅ Install dependencies using pnpm
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build
+      # ✅ Build your Astro project
+      - name: Build site
         run: pnpm run build
-        # Astro outputs to ./dist by default. Ensure astro.config.mjs has correct `site` for GH Pages.
 
+      # ✅ Configure GitHub Pages
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
+      # ✅ Upload the built files
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist
+          path: ./dist  # Astro's default output directory
 
   deploy:
     environment:
@@ -53,10 +60,12 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: build
+
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
 
 
 
