@@ -1,0 +1,343 @@
+---
+import Card from "@/components/ui/sections/card.astro";
+import GanttChart from "@/components/ui/sections/gantt-chart.astro";
+import ExperienceCard from "@/components/ui/sections/experience-card.astro";
+import {
+  workExperiences,
+  communityExperiences,
+  educationExperiences,
+} from "@/lib/experiences";
+import { icons } from "@/lib/icons";
+import { Icon } from "astro-icon/components";
+import Image from "astro/components/Image.astro";
+import H2 from "./ui/typography/H2.astro";
+
+interface Experience {
+  id: string;
+  type: "work" | "education" | "community";
+  title: string;
+  description?: string;
+  startDate: string;
+  endDate: string | null;
+}
+
+interface Organization {
+  name: string;
+  url: string;
+  logo: string;
+}
+
+interface ExperienceGroup {
+  organization: Organization;
+  experiences: Experience[];
+}
+
+const START_DATE = new Date("2022-12-25");
+const PRESENT_DATE = new Date();
+const TOTAL_YEARS = PRESENT_DATE.getFullYear() - START_DATE.getFullYear() + 1;
+
+// Calculate present line position
+// Basically subtract the number of months left in the total years and then get percentage
+const PRESENT_OFFSET =
+  ((TOTAL_YEARS - (12 - PRESENT_DATE.getMonth()) / 12) / TOTAL_YEARS) * 100;
+const COLORS = {
+  work: "bg-orange-400/40",
+  education: "bg-teal-400/40",
+  community: "bg-green-400/40",
+} as const;
+
+const HOVER_COLORS = {
+  work: "hover:bg-orange-300/40",
+  education: "hover:bg-teal-300/40",
+  community: "hover:bg-green-300/40",
+} as const;
+
+function getYearOffset(start: string) {
+  const startDate = new Date(start);
+  return (
+    startDate.getFullYear() -
+    START_DATE.getFullYear() +
+    startDate.getMonth() / 12
+  );
+}
+
+function getDuration(start: string, end: string | null) {
+  const startDate = new Date(start);
+  const endDate = end ? new Date(end) : PRESENT_DATE;
+  return (
+    endDate.getFullYear() -
+    startDate.getFullYear() +
+    (endDate.getMonth() - startDate.getMonth()) / 12
+  );
+}
+
+// Group experiences by company for work section
+const workExperiencesByCompany = workExperiences.reduce(
+  (acc, exp) => {
+    const key = exp.organization.name;
+    if (!acc[key]) {
+      acc[key] = {
+        organization: exp.organization,
+        experiences: [],
+      };
+    }
+    acc[key].experiences.push(exp);
+    return acc;
+  },
+  {} as Record<string, ExperienceGroup>
+);
+
+// Group experiences by organization for all sections
+const communityExperiencesByOrg = communityExperiences.reduce(
+  (acc, exp) => {
+    const key = exp.organization.name;
+    if (!acc[key]) {
+      acc[key] = {
+        organization: exp.organization,
+        experiences: [],
+      };
+    }
+    acc[key].experiences.push(exp);
+    return acc;
+  },
+  {} as Record<string, ExperienceGroup>
+);
+
+const educationExperiencesByOrg = educationExperiences.reduce(
+  (acc, exp) => {
+    const key = exp.organization.name;
+    if (!acc[key]) {
+      acc[key] = {
+        organization: exp.organization,
+        experiences: [],
+      };
+    }
+    acc[key].experiences.push(exp);
+    return acc;
+  },
+  {} as Record<string, ExperienceGroup>
+);
+
+// CSS for the hover card
+const hoverCardStyles = `
+  .experience-bar {
+    position: relative;
+  }
+  
+  .hover-card {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    top: calc(100% + 15px);
+    left: 50%;
+    transform: translateX(-50%) translateY(-10px);
+    width: 320px;
+    background: rgb(17 24 39);
+    border: 1px solid rgb(55 65 81);
+    border-radius: 8px;
+    padding: 16px;
+    z-index: 50;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.3);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .hover-card::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 12px;
+    height: 12px;
+    background: rgb(17 24 39);
+    border-left: 1px solid rgb(55 65 81);
+    border-top: 1px solid rgb(55 65 81);
+    transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Create an invisible area between bar and card to prevent closing */
+  .hover-card::after {
+    content: '';
+    position: absolute;
+    top: -15px;
+    left: 0;
+    width: 100%;
+    height: 15px;
+  }
+  
+  .experience-bar:hover .hover-card,
+  .hover-card:hover {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* Add a small delay when mouse leaves to prevent flickering */
+  .experience-bar:not(:hover) .hover-card:not(:hover) {
+    transition-delay: 50ms;
+  }
+
+  /* Ensure smooth image loading */
+  .hover-card img {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  .hover-card img.loaded {
+    opacity: 1;
+  }
+
+  /* Vertical timeline in hover card */
+  .role-timeline {
+    position: relative;
+    padding-left: 20px;
+  }
+
+  .role-timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: rgb(55 65 81);
+  }
+
+  .role-timeline-item {
+    position: relative;
+    padding-bottom: 16px;
+  }
+
+  .role-timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -24px;
+    top: 0;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgb(55 65 81);
+    border: 2px solid rgb(17 24 39);
+  }
+
+  .role-timeline-item:last-child {
+    padding-bottom: 0;
+  }
+`;
+---
+
+<style set:html={hoverCardStyles}></style>
+
+<!-- Timeline view (desktop) -->
+<div class="relative w-full pt-12 hidden md:block">
+  <!-- Present date line -->
+  <div
+    class="absolute top-0 bottom-0 w-px border-l border-white/20 border-dashed z-10"
+    style={`left: ${PRESENT_OFFSET}%`}
+  >
+    <div class="absolute -top-6 -translate-x-1/2 text-xs text-white/60">
+      Present
+    </div>
+  </div>
+
+  <!-- Work Experience -->
+  <div class="mb-16">
+    <div class="mb-10">
+      <H2>Work Experience</H2>
+    </div>
+    <GanttChart
+      experiences={Object.values(workExperiencesByCompany)}
+      type="work"
+      totalYears={TOTAL_YEARS}
+      startDate={START_DATE}
+      presentDate={PRESENT_DATE}
+      presentOffset={PRESENT_OFFSET}
+    />
+  </div>
+
+  <!-- Community Involvement -->
+
+  <div  id="#community" class="mb-16">
+    <div class="mb-10">
+      <H2>Community Involvement</H2>
+    </div>
+    <GanttChart
+      experiences={Object.values(communityExperiencesByOrg)}
+      type="community"
+      totalYears={TOTAL_YEARS}
+      startDate={START_DATE}
+      presentDate={PRESENT_DATE}
+      presentOffset={PRESENT_OFFSET}
+    />
+  </div>
+
+  <!-- Education -->
+  <div class="mb-16">
+    <div class="mb-10">
+      <H2>Education</H2>
+    </div>
+    <GanttChart
+      experiences={Object.values(educationExperiencesByOrg)}
+      type="education"
+      totalYears={TOTAL_YEARS}
+      startDate={START_DATE}
+      presentDate={PRESENT_DATE}
+      presentOffset={PRESENT_OFFSET}
+    />
+  </div>
+
+  <!-- Year indicators -->
+  <div class="grid grid-cols-[60px_1fr] gap-4">
+    <div></div>
+    <div
+      class="grid"
+      style={`grid-template-columns: repeat(${TOTAL_YEARS}, 1fr)`}
+    >
+      {
+        Array.from({ length: TOTAL_YEARS }).map((_, i) => {
+          const year = START_DATE.getFullYear() + i;
+          return <div class="text-sm text-gray-400">{year}</div>;
+        })
+      }
+    </div>
+  </div>
+</div>
+
+<!-- Card view (mobile) -->
+<div class="md:hidden">
+  <!-- Work Experience -->
+  <div class="mb-12">
+    <H2>Work Experience</H2>
+    <div class="space-y-12 mt-6">
+      {
+        Object.values(workExperiencesByCompany).map((group) => (
+          <ExperienceCard {...group} showLargeTitle={true} />
+        ))
+      }
+    </div>
+  </div>
+
+  <!-- Community Involvement -->
+  <div class="mb-12">
+    <H2>Community Involvement</H2>
+    <div class="space-y-12 mt-6">
+      {
+        Object.values(communityExperiencesByOrg).map((group) => (
+          <ExperienceCard {...group} />
+        ))
+      }
+    </div>
+  </div>
+
+  <!-- Education -->
+  <div class="mb-12">
+    <H2>Education</H2>
+    <div class="space-y-12 mt-6">
+      {
+        Object.values(educationExperiencesByOrg).map((group) => (
+          <ExperienceCard {...group} />
+        ))
+      }
+    </div>
+  </div>
+</div>

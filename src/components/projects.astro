@@ -1,0 +1,111 @@
+---
+import Button from "@/components/ui/button";
+import { icons } from "@/lib/icons";
+import { projects } from "@/lib/projects";
+import Image from "astro/components/Image.astro";
+import { Icon } from "astro-icon/components";
+import Container from "@/components/ui/sections/container.astro";
+import Card from "@/components/ui/sections/card.astro";
+
+const INITIAL_LIMIT = 3;
+---
+
+<Container title="Projects">
+  <Fragment slot="right-button">
+    <Button
+      client:load
+      className="py-1 whitespace-nowrap bg-transparent border-none w-fit cursor-pointer"
+      id="toggleProjects"
+    >
+      <span data-projects-button-text>View More</span>
+      <Icon
+        name={icons.ArrowDown}
+        data-projects-angle-icon
+        size="16"
+        class="transition-all duration-300"
+      />
+    </Button>
+  </Fragment>
+  <Fragment slot="vertical-grid">
+    {
+      projects.map((project, index) => (
+        <div
+          class:list={[
+            "grid md:grid-cols-[4fr_1fr]",
+            { hidden: index >= INITIAL_LIMIT },
+          ]}
+          data-project
+        >
+          <Card tags={project.labels}>
+            <Fragment slot="title">{project.name}</Fragment>
+            <Fragment slot="description">{project.description}</Fragment>
+            <Fragment slot="custom-footer">
+              <div class="flex justify-between md:mr-8 mt-2">
+                <span>{project.date}</span>
+                <div class="flex items-center gap-2 text-lg">
+                  <a
+                    href={project.sourceCode}
+                    target="_blank"
+                    class="hover:text-gray-300 transition-colors"
+                  >
+                    <Icon name={icons.SourceCode} />
+                  </a>
+                  {project.liveUrl && (
+                    <a
+                      href={project.liveUrl}
+                      target="_blank"
+                      class="hover:text-gray-300 transition-colors"
+                    >
+                      <Icon name={icons.Visit} />
+                    </a>
+                  )}
+                </div>
+              </div>
+            </Fragment>
+            <Fragment slot="location" />
+          </Card>
+          <a
+            href={project.liveUrl ?? project.sourceCode}
+            class="relative md:w-11/12 mx-auto md:max-w-64 aspect-video lg:border-2 border-gray-700 rounded-xl hover:border-gray-600 transition-colors"
+          >
+            <Image
+              src={project.image}
+              alt={project.name}
+              class="block rounded-xl lg:p-1 aspect-video"
+              sizes="100%"
+              fit="cover"
+              width={1000}
+              height={1000}
+              inferSize
+            />
+          </a>
+        </div>
+      ))
+    }
+  </Fragment>
+</Container>
+
+<script>
+  const toggleButton = document.getElementById("toggleProjects");
+  const buttonText = document.querySelector("[data-projects-button-text]");
+  const projects = document.querySelectorAll("[data-project]");
+  const angleIcon = document.querySelector("[data-projects-angle-icon]");
+
+  const INITIAL_LIMIT = 3;
+  let isExpanded = false;
+
+  toggleButton?.addEventListener("click", () => {
+    isExpanded = !isExpanded;
+
+    projects.forEach((project, index) => {
+      if (index >= INITIAL_LIMIT) {
+        project.classList.toggle("hidden");
+      }
+    });
+
+    if (buttonText && angleIcon) {
+      buttonText.textContent = isExpanded ? "View Less" : "View More";
+      angleIcon.classList.toggle("-rotate-180");
+    }
+  });
+</script>

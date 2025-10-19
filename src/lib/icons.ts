@@ -1,0 +1,52 @@
+export const icons: Record<string, string> = {
+  GitHub: "fa:github",
+  JavaScript: "simple-icons:javascript",
+  Linux: "fa:linux",
+  Python: "lineicons:python",
+
+  LinkedIn: "fa:linkedin",
+  Twitter: "fa6-brands:x-twitter",
+  DevTo: "lineicons:dev",
+  YouTube: "lineicons:youtube",
+       // for Projects or Books section
+  Project: "tabler:code",
+  Work: "mdi:briefcase-outline",
+  Community: "mdi:account-group-outline",
+  Contact: "mdi:call-outline",
+  Achievement: "mdi:trophy-outline",
+  CSS: "tabler:brand-css3",
+  Figma: "tabler:brand-figma",
+  Git: "tabler:brand-git",
+  HTML: "tabler:brand-html5",
+  MongoDB: "tabler:brand-mongodb",
+  NextJs: "tabler:brand-nextjs",
+  NodeJs: "tabler:brand-nodejs",
+  React: "tabler:brand-react",
+  Tailwind: "tabler:brand-tailwind",
+  TypeScript: "lineicons:typescript",
+  Vercel: "lineicons:vercel",
+  Vite: "tabler:brand-vite",
+  VSCode: "tabler:brand-vscode",
+  Astro: "simple-icons:astro",
+
+  Download: "tabler:download",
+  Visit: "tabler:external-link",
+  SourceCode: "tabler:code",
+  Close: "tabler:x",
+  Palette: "tabler:palette",
+  Envelope: "tabler:mail",
+  Blog: "tabler:book",
+  Mail: "tabler:mail",
+
+  Express: "simple-icons:express",
+
+  ArrowDown: "fa:angle-down",
+  ArrowRight: "fa:angle-right",
+  Star: "fa:star",
+
+  Now: "tabler:clock",
+  Books: "tabler:books",
+  Uses: "tabler:settings",
+
+  Refresh: "tabler:refresh",
+};

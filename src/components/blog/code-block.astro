@@ -1,0 +1,13 @@
+---
+import CodeRenderer from "./code-renderer";
+
+export interface Props {
+  language?: string;
+  title?: string;
+  code: string;
+}
+
+const { language, title, code } = Astro.props;
+---
+
+<CodeRenderer client:load code={code} language={language} title={title} />
