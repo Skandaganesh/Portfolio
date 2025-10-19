@@ -1,0 +1,67 @@
+---
+import { getCollection } from "astro:content";
+import MainLayout from "@/layouts/main-layout.astro";
+import BlogCard from "@/components/blog/blog-card.astro";
+import H1 from "@/components/ui/typography/H1.astro";
+
+const posts = await getCollection("blog");
+
+// Sort by date and featured status
+const sortedPosts = posts.sort((a, b) => {
+  if (a.data.isFeatured && !b.data.isFeatured) return -1;
+  if (!a.data.isFeatured && b.data.isFeatured) return 1;
+  return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
+});
+
+const [featuredPost, ...remainingPosts] = sortedPosts;
+---
+
+<MainLayout
+  title="Blog | Skanda Ganesh "
+  description="Articles about web development, programming, and technology."
+>
+  <main class="container mx-auto lg:px-48 md:px-24 px-8 my-16">
+    <div class="flex flex-col pb-4 mb-4">
+      <H1 className="border-b-0">Blog</H1>
+      <p class="text-gray-400 text-lg">
+        Sharing my thoughts, learnings and experiences through writing.
+      </p>
+    </div>
+
+    {
+      featuredPost && (
+        <div >
+          <BlogCard
+            title={featuredPost.data.title}
+            description={featuredPost.data.description}
+            date={featuredPost.data.date}
+            tags={featuredPost.data.tags}
+            slug={featuredPost.slug}
+            coverImage={featuredPost.data.coverImage}
+            isFeatured={featuredPost.data.isFeatured}
+            redirect={featuredPost.data.redirect}
+            originalPost={featuredPost.data.originalPost}
+          />
+        </div>
+      )
+    }
+
+    <div class="grid gap-8 xl:gap-4 my-4">
+      {
+        remainingPosts.map((post) => (
+          <BlogCard
+            title={post.data.title}
+            description={post.data.description}
+            date={post.data.date}
+            tags={post.data.tags}
+            slug={post.slug}
+            coverImage={post.data.coverImage}
+            isFeatured={post.data.isFeatured}
+            redirect={post.data.redirect}
+            originalPost={post.data.originalPost}
+          />
+        ))
+      }
+    </div>
+  </main>
+</MainLayout>

@@ -1,0 +1,58 @@
+---
+import { icons } from "@/lib/icons";
+import { Icon } from "astro-icon/components";
+import Button from "@/components/ui/button";
+import { Image } from "astro:assets";
+import { siteConfig } from "@/config/site";
+---
+
+<nav
+  class="fixed backdrop-blur-sm z-50 flex w-full items-center py-4 border-b border-b-gray-800 shadow-[0_0_120px_80px_rgba(0,0,0,0.1)] shadow-gray-700/10"
+>
+  <div
+    class="container mx-auto lg:px-48 md:px-24 px-8 flex items-center justify-between"
+  >
+    <div>
+      <a href="/" class="text-xl hover:text-gray-200">
+        <Image src={siteConfig.logo} alt="" width={36} height={36} />
+      </a>
+    </div>
+    <ul class="flex items-center gap-4 justify-end text-lg">
+      <Button client:load asChild>
+        <a href="/now" class="flex items-center gap-2">
+          <Icon name={icons.Now} />
+        </a>
+      </Button>
+     <ul class="flex items-center gap-4 justify-end text-lg">
+      <Button client:load asChild>
+        <a href="/#projects" class="flex items-center gap-2">
+          <Icon name={icons.Project} />
+          
+        </a>
+      </Button>
+
+      <Button client:load asChild>
+        <a href="/#work" class="flex items-center gap-2">
+          <Icon name={icons.Work} />
+        
+        </a>
+      </Button>
+
+
+      <Button client:load asChild>
+        <a href="/#achievements" class="flex items-center gap-2">
+          <Icon name={icons.Achievement} />
+       
+        </a>
+      </Button>
+    
+      <Button client:load asChild>
+        <a href="/#contact" class="flex items-center gap-2">
+          <Icon name={icons.Contact} />
+        
+        </a>
+      </Button>
+
+    </ul>
+  </div>
+</nav>

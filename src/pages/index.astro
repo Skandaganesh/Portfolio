@@ -1,0 +1,47 @@
+---
+import MainLayout from "../layouts/main-layout.astro";
+import Home from "@/components/home.astro";
+import TechStack from "@/components/tech-stack.astro";
+import Projects from "@/components/projects.astro";
+import Experience from "@/components/experience.astro";
+import Talks from "@/components/talks.astro";
+import Achievements from "@/components/achievements.astro";
+import Contact from "@/components/contact.astro";
+import FeaturedBlogs from "@/components/featured-blogs.astro";
+
+export type SearchParamsType = { [key: string]: string | string[] | undefined };
+---
+
+<MainLayout
+  title="Skanda Ganesh  | Frontend Developer"
+  description="Frontend Developer with a passion for building beautiful and functional web applications. Check out my portfolio to see my work."
+>
+  <main class="container mx-auto lg:px-48 md:px-24 px-8">
+    <!-- Give every section an ID + scroll margin to account for fixed navbar -->
+    <section id="home" class="scroll-mt-28">
+      <Home />
+    </section>
+
+    <section id="tech" class="scroll-mt-28">
+      <TechStack />
+    </section>
+
+    <section id="projects" class="scroll-mt-28">
+      <Projects />
+    </section>
+
+    <section id="work" class="scroll-mt-28">
+      <Experience />
+    </section>
+
+
+
+    <section id="achievements" class="scroll-mt-28">
+      <Achievements />
+    </section>
+
+    <section id="contact" class="scroll-mt-28">
+      <Contact />
+    </section>
+  </main>
+</MainLayout>

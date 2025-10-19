@@ -1,0 +1,70 @@
+---
+import Button from "@/components/ui/button"
+import Card from "@/components/ui/sections/card.astro"
+import Container from "@/components/ui/sections/container.astro"
+import H3 from "@/components/ui/typography/H3.astro"
+import { achievements } from "@/lib/achievements"
+import { icons } from "@/lib/icons"
+import { Icon } from "astro-icon/components"
+
+const INITIAL_LIMIT = 3
+---
+
+<Container title="Achievements">
+  <Fragment slot="right-button">
+    <Button
+      client:load
+      className="py-1 whitespace-nowrap bg-transparent border-none w-fit cursor-pointer"
+      id="toggleAchievements"
+    >
+      <span data-achievements-button-text>View More</span>
+      <Icon
+        name={icons.ArrowDown}
+        data-achievements-angle-icon
+        size="16"
+        class="transition-all duration-300"
+      />
+    </Button>
+  </Fragment>
+  <Fragment slot="vertical-grid">
+    {
+      achievements.map((achievement, index) => (
+        <div class:list={[{ hidden: index >= INITIAL_LIMIT }]} data-achievement>
+          <Card>
+            <Fragment slot="title">
+              {achievement.position} &#8226; {achievement.competition}
+            </Fragment>
+            <Fragment slot="description">{achievement.description}</Fragment>
+            <Fragment slot="location">{achievement.organizer}</Fragment>
+            <Fragment slot="date">{achievement.date}</Fragment>
+          </Card>
+        </div>
+      ))
+    }
+  </Fragment>
+</Container>
+
+<script>
+  const toggleButton = document.getElementById("toggleAchievements")
+  const buttonText = document.querySelector("[data-achievements-button-text]")
+  const achievements = document.querySelectorAll("[data-achievement]")
+  const angleIcon = document.querySelector("[data-achievements-angle-icon]")
+
+  const INITIAL_LIMIT = 3
+  let isExpanded = false
+
+  toggleButton?.addEventListener("click", () => {
+    isExpanded = !isExpanded
+
+    achievements.forEach((achievement, index) => {
+      if (index >= INITIAL_LIMIT) {
+        achievement.classList.toggle("hidden")
+      }
+    })
+
+    if (buttonText && angleIcon) {
+      buttonText.textContent = isExpanded ? "View Less" : "View More"
+      angleIcon.classList.toggle("-rotate-180")
+    }
+  })
+</script>
