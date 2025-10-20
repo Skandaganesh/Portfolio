@@ -40,7 +40,7 @@ export const projects = [
     description:
       "A Placement Preparation platform with daily aptitude tests, resume tools, and GATE preparation resources. Integrated internship listings and career guidance, benefiting 350+ students with 800+ aptitude tests till now.",
     image: "/projects/prephub.png",
-    labels: ["React.js", "Express.js", "Render"],
+    labels: ["React.js", "Express.js", "Render"," MongoDB", "Node.js","Vite"],
     date: "January 2025",
     sourceCode: "https://github.com/Skandaganesh/PrepHub",
     liveUrl: "https://prephub.dev/",
@@ -67,13 +67,24 @@ export const projects = [
   // update to actual repo if different
     liveUrl: "https://www.sahyadri.edu.in/",
   },
+   {
+    id: uuid(),
+    name: "MAPAMS: LLM Safety",
+    description:
+      "Multi-Agent Prompt Attack Assessment and Mitigation System to detect and defend against malicious or jailbreaking prompts in large language models.",
+    image: "/projects/mapams.png",
+    labels: ["LLM", "Streamlit", "FastAPI", "LangChain", "Multi-Agent"],
+    date: "March 2025",
+    sourceCode: "https://github.com/Skandaganesh/MAPAMS",
+    liveUrl: "https://jagrathakavach.streamlit.app/",
+  },
   {
     id: uuid(),
     name: "SWASTHYA: AI Nutrition",
     description:
       "Developed an AI-driven nutrition analysis platform offering personalized dietary recommendations based on uploaded food images.",
     image: "/projects/swasthya.png",
-    labels: ["FastAPI", "Machine Learning", "Streamlit", "Python"],
+    labels: ["FastAPI", "Machine Learning", "React.js", "Supabase"],
     date: "February 2025",
     sourceCode: "https://github.com/Skandaganesh/SWASTHYA/tree/master",
     liveUrl: "https://swaasthya.netlify.app/",
@@ -85,20 +96,21 @@ export const projects = [
     description:
       "An AI-powered image generation tool that converts Textual Books into detailed visuals, enabling creative and illustrative workflows and providing a unique way to visualize complex narratives.",
     image: "/projects/genpix.png",
-    labels: ["AI", "Generative Models", "Next.js", "Tailwind CSS"],
+    labels: ["AI", "Generative Models", "VITE", "Tailwind CSS"],
     date: "February 2025",
     sourceCode: "https://github.com/Skandaganesh/genpix",
     liveUrl: "https://genpix.netlify.app/",
   },
-  {
+   {
     id: uuid(),
-    name: "MAPAMS: LLM Safety",
+    name: "Heggade Vahini Website",
     description:
-      "Multi-Agent Prompt Attack Assessment and Mitigation System to detect and defend against malicious or jailbreaking prompts in large language models.",
-    image: "/projects/mapams.png",
-    labels: ["LLM", "AI Safety", "FastAPI", "LangChain", "Multi-Agent"],
-    date: "March 2025",
-    sourceCode: "https://github.com/Skandaganesh/MAPAMS",
-    liveUrl: "https://jagrathakavach.streamlit.app/",
+      "A comprehensive platform for the Heggade Vahini community, offering news and latest Updates including the monthly newsletter.",
+    image: "/projects/heggade.png",
+    labels: ["Next.js", "Tailwind CSS", "Nest.js", "PostgreSQL", "AWS"],
+    date: "October 2024",
+
+    liveUrl: "https://heggadevahini.com/",
   },
+ 
 ]
