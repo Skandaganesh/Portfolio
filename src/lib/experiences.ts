@@ -30,7 +30,7 @@ Collaborated with a team to build scalable and responsive websites for two renow
       location: "Mangalore, Karnataka",
     },
     startDate: "Nov 2024",
-    endDate: null,
+    endDate: "Dec 2025",
   },
   {
     id: uuid(),
@@ -60,7 +60,7 @@ Gained exposure to RFCs and Non-Catalogue tasks involving cross-system integrati
       logo: "/experiences/sosc.jpeg",
     },
     startDate: "Dec 2024",
-    endDate:null,
+    endDate:"Dec 2025",
   },
   // {
   //   id: uuid(),
@@ -88,7 +88,7 @@ Gained exposure to RFCs and Non-Catalogue tasks involving cross-system integrati
       logo: "/experiences/isdc.jpg",
     },
     startDate: "Oct 2024",
-    endDate: null,
+    endDate: "Dec 2025",
   },
   {
     id: uuid(),
@@ -141,7 +141,7 @@ Gained exposure to RFCs and Non-Catalogue tasks involving cross-system integrati
       logo: "/experiences/ieee.png",
     },
     startDate: "Feb 2025",
-    endDate: null,
+    endDate: "Dec 2025",
   },
   // {
     //   id: uuid(),
@@ -169,7 +169,7 @@ Gained exposure to RFCs and Non-Catalogue tasks involving cross-system integrati
       logo: "/experiences/iic.jpg",
     },
     startDate: "June 2025",
-    endDate: null,
+    endDate: "Dec 2025",
   },
   {
     id: uuid(),
