@@ -50,6 +50,22 @@ Gained exposure to RFCs and Non-Catalogue tasks involving cross-system integrati
   },
   {
     id: uuid(),
+    title: "Product Engineering Intern",
+    type: "work" as const,
+    description: `
+Worked on Projects involving Generative AI and contributed to their development and enhancements.`,
+    organization: {
+      name: "Deloitte",
+      url: "https://www.deloitte.com",
+      logo: "/experiences/deloitte.jpg", // replace with your logo
+      location: "Bengaluru, Karnataka",
+    },
+    startDate: "Jan 2026",
+    endDate: "",
+  },
+  
+  {
+    id: uuid(),
     title: "Member",
     type: "community" as const,
     description:
